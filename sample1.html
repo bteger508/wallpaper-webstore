@@ -2,7 +2,7 @@
 <head></head>
 <body>
 <h1>Register</h1>
-<form method="post" action="">
+<form method="post">
 
     <!-- name used by server; id/class used by browser -->
     <label for="fname">First name</label>
@@ -30,7 +30,7 @@
     <br>
 
     <label for="fav-prime-color">Favorite Prime Color</label>
-    <select>
+    <select id="fav-prime-color">
         <option>red</option>
         <option>yellow</option>
         <option>blue</option>
@@ -45,7 +45,7 @@
     <input type="checkbox" id="service-agreement" name="service-agreement">
     <br>
 
-    <input type="submit" id="submit">
+    <input type="submit" id="submit" value="submit" onclick="validateNoEmptyFields()">
 </form>
 </body>
 <script src="sample1.js"></script>
