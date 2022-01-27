@@ -6,7 +6,7 @@ function validateAll() {
     if (!passwordsMatch()) {
         errors.push("Passwords must match")
     }
-    if (!passwordLength) {
+    if (!passwordLength()) {
         errors.push("Password must be at least 12 characters long")
     }
 
@@ -40,12 +40,3 @@ function passwordsMatch() {
 function passwordLength() {
     return document.getElementById('password').value.length >= 12
 }
-
-function noEmptyInputFields() {
-    return false
-}
-
-function validateUsername() {
-    return false
-}
-
