@@ -9,14 +9,17 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
-    <script src="sample1.js"></script>
+    <script src="sample1.js" defer></script>
+    <script>
+
+    </script>
   <body>
       <!-- BootStrap form -->
       <div class="container-fluid w-100">
           <h1>Register</h1>
           
           
-          <form method="post" action="login_validation.php" class="col">
+          <form method="post" action="login_validation.php" class="col" id="registerForm" >
             
             <!-- Username -->
             <div class="form-group row">
@@ -60,9 +63,9 @@
 
             <!-- Password Confirm -->
             <div class="form-group row">
-                <label for="pw-confirm" class="col-2 col-form-label mr-2 text-right">Confirm Password</label>
+                <label for="pwConfirm" class="col-2 col-form-label mr-2 text-right">Confirm Password</label>
                 <div class="col-xs-9">
-                    <input type="password" class="form-control" name="pw-confirm" id="pw-confirm" placeholder="" required>
+                    <input type="password" class="form-control" name="pwConfirm" id="pwConfirm" placeholder="" required>
                 </div>
             </div>
 
@@ -80,23 +83,23 @@
             <div class="form-group row">
                 <label for="dob" class="col-2 col-form-label mr-2 text-right">Date of Birth</label>
                 <div class="col-xs-9">
-                    <input type="tel" class="form-control" name="dob" id="dob" placeholder="" required>
+                    <input type="date" class="form-control" name="dob" id="dob" placeholder="" required>
                 </div>
             </div>
 
             <!-- Color -->
             <div class="form-group row">
-                <label for="fav-color" class="col-2 col-form-label mr-2 text-right">Favorite Color</label>
+                <label for="favColor" class="col-2 col-form-label mr-2 text-right">Favorite Color</label>
                 <div class="col-xs-9">
-                    <input type="color" class="col-form-control form-control-color" name="fav-color" id="fav-color" value="#563d7c" required>
+                    <input type="color" class="col-form-control form-control-color" name="favColor" id="favColor" value="#563d7c" required>
                 </div>
             </div>
             
             <!-- Terms of Service -->
             <div class="form-group row">
-                <label for="service-agreement" class="col-3 col-form-label mr-2">I have read and agree to the terms of service</label>
+                <label for="serviceAgreement" class="col-3 col-form-label mr-2">I have read and agree to the terms of service</label>
                 <div class="col-xs-9">
-                    <input type="checkbox" class="col-form-check-input" name="service-agreement" id="service-agreement" value="true" required>
+                    <input type="checkbox" class="col-form-check-input" name="serviceAgreement" id="serviceAgreement" value="true" required>
                 </div>
             </div>
 
@@ -107,11 +110,16 @@
                 </div>
             </fieldset> -->
 
+            <div class="col" id="registerErrors" style="color: red;">
+
+            </div>
+
+
             <!-- Submit Register Form Button -->
             <div class="form-group row">
                 <div class="offset-sm-2 col-sm-10">
                     <button type="input" class="btn btn-primary" 
-                    id="submit" value="submit" onclick="validateAll()">Register</button>
+                    id="submit" value="submit">Register</button>
                 </div>
             </div>
         </form>

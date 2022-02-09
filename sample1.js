@@ -1,6 +1,8 @@
- 
-function validateAll() {
-    errors = [];
+const errors = [];
+document.getElementById('registerForm').addEventListener('submit', validateAll)
+
+function validateAll(event) {
+    
     if (!passwordsMatch(getPassword(), getPasswordConfirm())) {
         errors.push("Passwords must match")
     }
@@ -8,9 +10,20 @@ function validateAll() {
         errors.push("Password must be at least 12 characters long")
     }
 
+    if(!checkUsername(getUsername())) {
+        errors.push("Username must be at least 8 characters long with only numbers and letters")
+    }
+
     if (errors.length > 0 ) {
-        console.error(errors)
-        return false
+        console.error(errors);
+        document.getElementById("registerErrors").innerHTML = ''
+        for(err of errors) {
+            document.getElementById("registerErrors").innerHTML += "<p>" + err + "</p>"
+        }
+        while(errors.length > 0) {
+            errors.pop();
+        }
+        event.preventDefault()
     }
 
     return true
@@ -26,15 +39,35 @@ function passwordsMatch(pw1, pw2) {
     return pw1 === pw2
 }
 
-function passwordLength() {
-    return document.getElementById('password').value.length >= 12
+function passwordLength(pw) {
+    return pw.length >= 12
+}
+
+function checkUsername(username) {
+    let valid = /([a-z]|[0-9]){8,}/
+    return valid.test(username)
+}
+
+// Getters
+
+function getUsername() {
+    return document.getElementById('username').value
+}
+
+function getFirstName() {
+    return document.getElementById('fname').value
 }
 
 function getPassword() {
-    password = document.getElementById('password').value
+    return document.getElementById('password').value
 }
 
 function getPasswordConfirm() {
-    password = document.getElementById('pw-confirm').value
+    return document.getElementById('pwConfirm').value
 }
 
+// Setters
+
+function setErrorsOnHtml(errors) {
+    document.getElementById('registerErrors').value = errors
+}
