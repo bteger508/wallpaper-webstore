@@ -1,12 +1,10 @@
+ 
 function validateAll() {
     errors = [];
-    if (!validateNoEmptyFields()) {
-        errors.push("No empty fields")
-    }
-    if (!passwordsMatch()) {
+    if (!passwordsMatch(getPassword(), getPasswordConfirm())) {
         errors.push("Passwords must match")
     }
-    if (!passwordLength()) {
+    if (!passwordLength(getPassword())) {
         errors.push("Password must be at least 12 characters long")
     }
 
@@ -18,25 +16,25 @@ function validateAll() {
     return true
 }
 
-function validateNoEmptyFields() {
-    myForm = document.getElementsByTagName('form')[0]
-    for (elt in myForm.elements) {
-        if (myForm.elements[elt].value == '') {
-            console.log(myForm.elements[elt])
-            alert('Cannot leave a field blank')
-            return false
-        }
-    }
-
-    return true
+// Passwords: 12 chars (2 digits, 2 special)
+function validPassword(pw) {
+    let containsNums = /.*(\d).*(\d)/; 
+    return containsNums.test(pw)
 }
 
-function passwordsMatch() {
-    password = document.getElementById('password').value
-    passwordConfirm = document.getElementById('pw-confirm').value
-    return password === passwordConfirm
+function passwordsMatch(pw1, pw2) {
+    return pw1 === pw2
 }
 
 function passwordLength() {
     return document.getElementById('password').value.length >= 12
 }
+
+function getPassword() {
+    password = document.getElementById('password').value
+}
+
+function getPasswordConfirm() {
+    password = document.getElementById('pw-confirm').value
+}
+
