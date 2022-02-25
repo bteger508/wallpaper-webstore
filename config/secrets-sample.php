@@ -5,7 +5,7 @@
 <!-- COPY ALL BELOW THIS LINE -->
 <?php
 
-DEFINE ('DB_HOSTNAME', ''); // school -> csmadison.dhcp.bsu.edu
+DEFINE ('DB_HOSTNAME', ''); // school -> csmadison.dhcp.bsu.edu or localhost
 DEFINE ('DB_USERNAME', ''); // bsu username
 DEFINE ('DB_PASSWORD', ''); // mysql password (not your bsu password)
 DEFINE ('DB_DATABASE', ''); // cs420_yourBSUUsername
