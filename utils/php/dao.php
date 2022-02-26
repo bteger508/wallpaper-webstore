@@ -7,7 +7,7 @@ set_error_handler("myErrorHandler");
 
 // functions for testing
 // var_dump(check_user("wamie")); 
-// var_dump(insert_user(null, 'wamie', 'bteger@bsu.edu', '12345', null, 'ben', 'eger', '2000-01-22', '#FFFFF', '111-111-1111', null));
+// var_dump(insert_user('wamie4', 'bteger@bsu.edu', '12345', 'ben', 'eger', '2000-01-22', '#FFFFF', '111-111-1111', null));
 // var_dump(retrieve_all_users());
 // var_dump(validate_user("wamie", '12345'));
 
@@ -38,11 +38,9 @@ function retrieve_all_users()
 
 // Inserts a user into MySQL if the username is not taken! Returns true if insertion succeeds, otherwise false.
 function insert_user(
-    $user_id,
     $username,
     $email,
     $password,
-    $create_time,
     $first_name,
     $last_name,
     $date_of_birth,
@@ -56,13 +54,15 @@ function insert_user(
         return False;
     } else {
         $conn = DB_connect();
-        $stmt = $conn->prepare("INSERT INTO user (user_id, username, email, password, create_time, first_name, last_name, date_of_birth, 
-                                    favorite_color, phone_number, shopping_cart_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO user (username, email, password, create_time, first_name, last_name, date_of_birth, 
+                                    favorite_color, phone_number, shopping_cart_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $current_date = new DateTime();
+        $create_time = $current_date->format('Y-m-d');
+        var_dump($create_time);
 
         $pw_hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt->bind_param(
-            "isssssssssi",
-            $user_id,
+            "sssssssssi",
             $username,
             $email,
             $pw_hash,
