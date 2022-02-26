@@ -6,19 +6,26 @@ include '../../config/secrets.php';
 set_error_handler("myErrorHandler");
 
 // functions for testing
-
-// var_dump(insert_user(null, 'bteger', 'bteger@bsu.edu', '222222', null, 'ben', 'eger', '2000-01-22', '#FFFFF', '111-111-1111', null));
+// var_dump(check_user("wamie")); 
+// var_dump(insert_user(null, 'wamie', 'bteger@bsu.edu', '12345', null, 'ben', 'eger', '2000-01-22', '#FFFFF', '111-111-1111', null));
 // var_dump(retrieve_all_users());
+// var_dump(validate_user("wamie", '12345'));
 
-function DB_connect()
+
+// Returns true if the $username and pw match a record in the db, else false
+function validate_user($username, $password)
 {
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-    $conn = new mysqli(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-    return $conn;
+    $conn = DB_connect();
+    $stmt = $conn->prepare("SELECT password FROM user WHERE username=?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->bind_result($pw_hash);
+    $stmt->fetch();
+    return password_verify($password, $pw_hash);
+    $conn->close();
 }
 
-
-
+// Returns an associative array of all user records in the DB
 function retrieve_all_users()
 {
     $conn = DB_connect();
@@ -29,6 +36,7 @@ function retrieve_all_users()
     $conn->close();
 }
 
+// Inserts a user into MySQL if the username is not taken! Returns true if insertion succeeds, otherwise false.
 function insert_user(
     $user_id,
     $username,
@@ -43,27 +51,52 @@ function insert_user(
     $shopping_cart_id
 ) {
 
-    $conn = DB_connect();
-    $stmt = $conn->prepare("INSERT INTO user (user_id, username, email, password, create_time, first_name, last_name, date_of_birth, 
-                                favorite_color, phone_number, shopping_cart_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    // Don't allow duplicate usernames
+    if (username_exists($username)) {
+        return False;
+    } else {
+        $conn = DB_connect();
+        $stmt = $conn->prepare("INSERT INTO user (user_id, username, email, password, create_time, first_name, last_name, date_of_birth, 
+                                    favorite_color, phone_number, shopping_cart_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    $pw_hash = password_hash($password, PASSWORD_DEFAULT);
-    $stmt->bind_param(
-        "isssssssssi",
-        $user_id,
-        $username,
-        $email,
-        $pw_hash,
-        $create_time,
-        $first_name,
-        $last_name,
-        $date_of_birth,
-        $favorite_color,
-        $phone_number,
-        $shopping_cart_id
-    );
-    return $stmt->execute();
+        $pw_hash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt->bind_param(
+            "isssssssssi",
+            $user_id,
+            $username,
+            $email,
+            $pw_hash,
+            $create_time,
+            $first_name,
+            $last_name,
+            $date_of_birth,
+            $favorite_color,
+            $phone_number,
+            $shopping_cart_id
+        );
+        return $stmt->execute();
+        $conn->close();
+    }
+}
+
+// Returns true if $username already exists in MySQL
+function username_exists($username)
+{
+    $conn = DB_connect();
+    $stmt = $conn->prepare("SELECT user_id FROM user WHERE username=?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->bind_result($user_id);
+    $stmt->fetch();
+    return !is_null($user_id);
     $conn->close();
+}
+
+function DB_connect()
+{
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    $conn = new mysqli(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+    return $conn;
 }
 
 // The first parameter is required, even though it isn't used in the function body!
