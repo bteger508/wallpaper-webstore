@@ -1,13 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Title</title>
-		<!-- Required meta tags -->
-		<meta charset="utf-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1, shrink-to-fit=no"
-		/>
+    <head>
+        <title>Title</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <script src="index.js" defer></script>
+    <script>
+
+    </script>
+  <body>
+      <nav class="nav justify-content-end">
+        <a class="nav-link active" href="../login-page">Login</a>
+        <a class="nav-link" href="../register-page">Register</a>
+      </nav>
+      
+      <!-- BootStrap form -->
+      <div class="container-fluid w-100">
+
+
+          <h1>Register</h1>
+          
+          
+          <form method="post" action="register_validation.php" class="col" id="registerForm" >
+            
+            <!-- Username -->
+            <div class="form-group row">
+                <label for="username" class="col-2 col-form-label mr-2 text-right">Username</label>
+                <div class="col-xs-9">
+                    <input type="text" class="form-control" name="username" id="username" placeholder="" required>
+                </div>
+            </div>
 
 		<!-- Bootstrap CSS -->
 		<link
