@@ -45,7 +45,7 @@ nav a:hover {
 	border-bottom: 4px solid white;
 }
 
-.login-form {
+.register-form {
 	display: grid;
 	background-color: rgb(223, 223, 223);
 }

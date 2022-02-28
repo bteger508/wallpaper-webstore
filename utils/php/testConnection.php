@@ -10,3 +10,5 @@ if ($conn === false) {
 } else {
     echo "Connected" . "<br>";
 }
+
+mysqli_close($conn);
