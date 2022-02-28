@@ -6,7 +6,7 @@ include '../../config/secrets.php';
 set_error_handler("myErrorHandler");
 
 // functions for testing
-// var_dump(check_user("wamie")); 
+// var_dump(username_exists("wamie")); 
 // var_dump(insert_user('wamie4', 'bteger@bsu.edu', '12345', 'ben', 'eger', '2000-01-22', '#FFFFF', '111-111-1111', null));
 // var_dump(retrieve_all_users());
 // var_dump(validate_user("wamie", '12345'));
@@ -21,8 +21,9 @@ function validate_user($username, $password)
     $stmt->execute();
     $stmt->bind_result($pw_hash);
     $stmt->fetch();
-    return password_verify($password, $pw_hash);
+
     $conn->close();
+    return password_verify($password, $pw_hash);
 }
 
 // Returns an associative array of all user records in the DB
@@ -30,10 +31,11 @@ function retrieve_all_users()
 {
     $conn = DB_connect();
     $result = $conn->query("SELECT * FROM user");
+
+    $conn->close();
     if ($result) {
         return $result->fetch_assoc();
     }
-    $conn->close();
 }
 
 // Inserts a user into MySQL if the username is not taken! Returns true if insertion succeeds, otherwise false.
@@ -74,8 +76,9 @@ function insert_user(
             $phone_number,
             $shopping_cart_id
         );
-        return $stmt->execute();
+
         $conn->close();
+        return $stmt->execute();
     }
 }
 
@@ -88,8 +91,9 @@ function username_exists($username)
     $stmt->execute();
     $stmt->bind_result($user_id);
     $stmt->fetch();
-    return !is_null($user_id);
+
     $conn->close();
+    return !is_null($user_id);
 }
 
 function DB_connect()
