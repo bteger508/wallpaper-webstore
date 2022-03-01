@@ -20,7 +20,6 @@
 		<link rel="stylesheet" href="index.css" />
 	</head>
 	<script src="index.js" defer></script>
-	<script></script>
 	<body>
 		<?php
 		include('../shared/nav-toolbar.php')
