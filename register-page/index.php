@@ -20,21 +20,13 @@
 		<link rel="stylesheet" href="index.css" />
 	</head>
 	<script src="index.js" defer></script>
-	<script></script>
+	<script>
+		console.log("hello")
+	</script>
 	<body>
-		<nav class="container-fluid">
-			<div class="row justify-content-between">
-				<div class="col">
-					<span class="h2 p-2">Wallpaper Webstore</span>
-				</div>
-				<div class="col col-auto">
-					<div class="row">
-						<a class="nav-link" href="../login-page">Login</a>
-						<a class="nav-link active" href="../register-page">Register</a>
-					</div>
-				</div>
-			</div>
-		</nav>
+		<?php
+		include('../shared/nav-toolbar.php')
+		?>
 
 		<!-- BootStrap form -->
 		<div class="login-form container-fluid">
