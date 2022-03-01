@@ -1,3 +1,13 @@
+// ====== ADD ACTIVE ROUTE LINK ==========
+function addActiveRoute() {
+	let element = document.getElementById('login_route')
+	element.classList.add('active')
+}
+$(document).ready(function () {
+	addActiveRoute()
+})
+
+// ============ ERROR CHECKING ===========
 const errors = []
 document.getElementById('loginForm').addEventListener('submit', validateAll)
 

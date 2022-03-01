@@ -1,3 +1,13 @@
+// ====== ADD ACTIVE ROUTE LINK ==========
+function addActiveRoute() {
+	let element = document.getElementById('register_route')
+	element.classList.add('active')
+}
+$(document).ready(function () {
+	addActiveRoute()
+})
+
+// ============ ERROR CHECKING ===========
 const errors = []
 document.getElementById('registerForm').addEventListener('submit', validateAll)
 
