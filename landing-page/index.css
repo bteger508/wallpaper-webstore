@@ -46,15 +46,3 @@ nav a:hover {
 	color: white;
 	border-bottom: 4px solid white;
 }
-
-/* TABLE STYLING */
-
-table {
-	margin: 5rem;
-}
-
-table,
-th,
-td {
-	border: 2px solid;
-}

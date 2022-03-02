@@ -1,3 +1,8 @@
+<?php
+if (!defined('ROOT_DIR')) {
+	DEFINE('ROOT_DIR', __DIR__.'/../');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -22,7 +27,7 @@
 	<script src="index.js" defer></script>
 	<body>
 		<?php
-		include('../shared/nav-toolbar.php')
+		include(ROOT_DIR.'./shared/nav-toolbar.php')
 		?>
 
 		<!-- BootStrap form -->

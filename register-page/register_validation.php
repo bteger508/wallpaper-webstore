@@ -1,5 +1,10 @@
 <?php
 
+if (!defined('ROOT_DIR')) {
+	DEFINE('ROOT_DIR', __DIR__.'/../');
+}
+include ROOT_DIR.'./utils/php/dao.php';
+
 $errors = [];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -66,16 +71,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "'username' must contain at least 8 characters and consist only of letters and numbers";
     }
 
+    // Do the actual request if no errors
+    if (empty($errors)) {
+        if (insert_user($username, $email, $password, $first_name, $last_name, $dob, $favColor, $phone, null)) {
+            header('Location: ../landing-page/index.php');
+        } else {
+            header('Location: ../register-page/index.php');
+            $errors[] = 'Username already exists.';
+        }
+    }
+
     // echo the errors (if any)
     foreach ($errors as $error) {
         echo $error . '<br>';
-    }
-
-    // Do the actual request if no errors
-    if (empty($errors)) {
-        echo "Registration successful";
-
-        header('Location: ../landing-page');
     }
 }
 
