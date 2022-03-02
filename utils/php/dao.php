@@ -1,10 +1,9 @@
 <?php
 
 if (!defined('ROOT_DIR')) {
-	DEFINE('ROOT_DIR', __DIR__.'../../');
+	DEFINE('ROOT_DIR', __DIR__.'/../../');
 }
-include ROOT_DIR.'./config/secrets.php';
-
+include_once ROOT_DIR.'./config/secrets.php';
 
 set_error_handler("myErrorHandler");
 
@@ -25,8 +24,8 @@ function validate_user($username, $password)
     $stmt->bind_result($pw_hash);
     $stmt->fetch();
 
-    $conn->close();
     return password_verify($password, $pw_hash);
+    $conn->close();
 }
 
 // Returns an associative array of all user records in the DB
@@ -35,10 +34,10 @@ function retrieve_all_users()
     $conn = DB_connect();
     $result = $conn->query("SELECT * FROM user");
 
-    $conn->close();
     if ($result) {
         return $result->fetch_assoc();
     }
+    $conn->close();
 }
 
 // Inserts a user into MySQL if the username is not taken! Returns true if insertion succeeds, otherwise false.
@@ -80,8 +79,8 @@ function insert_user(
             $shopping_cart_id
         );
 
-        $conn->close();
         return $stmt->execute();
+        $conn->close();
     }
 }
 
@@ -95,8 +94,8 @@ function username_exists($username)
     $stmt->bind_result($user_id);
     $stmt->fetch();
 
-    $conn->close();
     return !is_null($user_id);
+    $conn->close();
 }
 
 function DB_connect()
@@ -111,6 +110,6 @@ function myErrorHandler($errno, $errstr, $errfile, $errline)
 {
     error_log("$errstr in $errfile:$errline");
     header('HTTP/1.1 500 Internal Server Error', True, 500);
-    readfile("error.html");
+    readfile(ROOT_DIR."./utils/php/error.html");
     exit;
 }
