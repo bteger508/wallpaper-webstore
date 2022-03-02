@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('ROOT_DIR')) {
-	DEFINE('ROOT_DIR', __DIR__.'../');
+	DEFINE('ROOT_DIR', __DIR__.'/../');
 }
 include ROOT_DIR.'./utils/php/dao.php';
 
