@@ -24,6 +24,8 @@ body {
 	margin: 0;
 }
 
+/* NAV BAR STYLING */
+
 nav {
 	background: linear-gradient(#c73737, #bea0a0);
 	border-bottom: 0.125rem solid rgb(105, 0, 0);
@@ -43,4 +45,16 @@ nav a.active {
 nav a:hover {
 	color: white;
 	border-bottom: 4px solid white;
+}
+
+/* TABLE STYLING */
+
+table {
+	margin: 5rem;
+}
+
+table,
+th,
+td {
+	border: 2px solid;
 }

@@ -31,8 +31,31 @@ if (!defined('ROOT_DIR')) {
 		include(ROOT_DIR.'./shared/nav-toolbar.php');
 		?>
 
+		<!-- ===== Show All Users -->
 		<?php
-		include(ROOT_DIR.'./utils/php/testConnection.php');
+		include(ROOT_DIR.'./utils/php/dao.php');
+		echo "<table>";
+		echo "<tr>";
+		echo "<td><strong>Username</strong></td>";
+		echo "<td><strong>Email</strong></td>";
+		echo "<td><strong>First Name</strong></td>";
+		echo "<td><strong>Last Name</strong></td>";
+		echo "<td><strong>Date of Birth</strong></td>";
+		echo "<td><strong>Phone Number</strong></td>";
+		echo "<td><strong>Account Created On</strong></td>";
+		echo "</tr>";
+		foreach (retrieve_all_users() as $user) {
+			echo "<tr>";
+			echo "<td>" . $user['username'] . "</td>";
+			echo "<td>" . $user['email'] . "</td>";
+			echo "<td>" . $user['first_name'] . "</td>";
+			echo "<td>" . $user['last_name'] . "</td>";
+			echo "<td>" . $user['date_of_birth'] . "</td>";
+			echo "<td>" . $user['phone_number'] . "</td>";
+			echo "<td>" . $user['create_time'] . "</td>";
+			echo "</tr>";
+		}
+		echo "</table>";
 		?>
 
 
