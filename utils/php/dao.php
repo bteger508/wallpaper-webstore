@@ -35,7 +35,10 @@ function retrieve_all_users()
     $result = $conn->query("SELECT * FROM user");
 
     if ($result) {
-        return $result->fetch_assoc();
+        while($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
     }
     $conn->close();
 }
