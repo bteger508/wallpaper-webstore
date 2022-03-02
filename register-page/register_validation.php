@@ -1,5 +1,10 @@
 <?php
 
+if (!defined('ROOT_DIR')) {
+	DEFINE('ROOT_DIR', __DIR__.'../');
+}
+include ROOT_DIR.'./utils/php/dao.php';
+
 $errors = [];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -75,7 +80,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($errors)) {
         echo "Registration successful";
 
-        header('Location: ../landing-page');
+        if (insert_user($username, $email, $password, $first_name, $last_name, $dob, $favColor, $phone, null)) {
+
+            header('Location: ../landing-page');
+        }
     }
 }
 
