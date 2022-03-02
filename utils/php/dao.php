@@ -3,7 +3,7 @@
 if (!defined('ROOT_DIR')) {
 	DEFINE('ROOT_DIR', __DIR__.'../../');
 }
-include ROOT_DIR.'../../config/secrets.php';
+include ROOT_DIR.'./config/secrets.php';
 
 
 set_error_handler("myErrorHandler");
