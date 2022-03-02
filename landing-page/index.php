@@ -1,3 +1,8 @@
+<?php
+if (!defined('ROOT_DIR')) {
+	DEFINE('ROOT_DIR', __DIR__.'/../');
+}
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -8,12 +13,14 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="index.css" />
   </head>
+  <script src="./index.js" defer></script>
   <body>
-    <nav class="nav justify-content-end">
-        <a class="nav-link active disabled" href="">Home</a>
-        <a class="nav-link" href="../login-page">Logout</a>
-    </nav>
+      <?php
+      include(ROOT_DIR.'./shared/nav-toolbar.php')
+      ?>
 
       <h1>Landing Page</h1>
       <h2>Success Login, btw</h2>
