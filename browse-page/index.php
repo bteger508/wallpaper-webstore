@@ -33,8 +33,8 @@ if (!defined('ROOT_DIR')) {
         <h1>Browse Page</h1>
 
         <div class="testPictureContainer">
-            <img src="http://csmadison.dhcp.bsu.edu/~kmmatchett/wallpaper-webstore/resources/backyard.jpeg" alt="backyard" width="806.4" height="604.8"> <!-- 4032 3024Image downscaled factor of 5 -->
-
+            <img src="http://csmadison.dhcp.bsu.edu/~kmmatchett/wallpaper-webstore/resources/backyard.jpeg" alt="backyard" width="806.4" height="604.8"> <!-- 4032 3024 Image downscaled factor of 5 -->
+            <img src="http://csmadison.dhcp.bsu.edu/~kmmatchett/wallpaper-webstore/resources/bsu-emens.jpeg" alt="bsu-emens" width="806.4" height="604.8"> <!-- 4032 3024 Image downscaled factor of 5 -->
 
 		<!-- Optional JavaScript -->
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
