@@ -8,7 +8,7 @@ if (!defined('ROOT_DIR')) {
 	<head>
 		<title>Login</title>
 		<!-- Required meta tags -->
-		<meta charset="utf-8" />
+		<meta charset="utf-8"/>
 		<meta
 			name="viewport"
 			content="width=device-width, initial-scale=1, shrink-to-fit=no"
@@ -22,7 +22,7 @@ if (!defined('ROOT_DIR')) {
 			crossorigin="anonymous"
 		/>
 
-		<link rel="stylesheet" href="index.css" />
+		<link rel="stylesheet" href="index.css"/>
 	</head>
 	<script src="index.js" defer></script>
 	<body>
