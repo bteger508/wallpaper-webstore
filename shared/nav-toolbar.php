@@ -9,6 +9,7 @@
                 <a id="home_route" class="nav-link" href="../landing-page">Home</a>
                 <a id="login_route" class="nav-link" href="../login-page">Login</a>
                 <a id="register_route" class="nav-link" href="../register-page">Register</a>
+                <a id="browse_route" class="nav-link" href="../browse-page">Browse</a>
             </div>
         </div>
     </div>
