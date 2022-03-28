@@ -1,7 +1,16 @@
 <?php
 if (!defined('ROOT_DIR')) {
-  DEFINE('ROOT_DIR', __DIR__ . '/../');
+    DEFINE('ROOT_DIR', __DIR__ . '/../');
 }
+
+include(ROOT_DIR . './utils/php/cookies.php');
+include(ROOT_DIR . './utils/php/product-dao.php');
+
+setFavoriteTag('morning');
+var_dump(getFavoriteTag());
+$productsArray = get_by_tagname(getFavoriteTag());
+var_dump($productsArray);
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -22,53 +31,31 @@ if (!defined('ROOT_DIR')) {
 
 <body>
     <?php
-  include(ROOT_DIR . './shared/nav-toolbar.php')
-  ?>
+    include(ROOT_DIR . './shared/nav-toolbar.php')
+    ?>
     <div class="container">
         <h1>Landing Page</h1>
 
+        <!-- This fancy PHP printing is from this article:
+        https://phpdelusions.net/mysqli_examples/prepared_select -->
+        <?php if ($productsArray) : ?>
         <h2>Suggested for You</h2>
         <div class="row justify-content-md-center">
+
+            <?php foreach ($productsArray as $product) : ?>
             <div class="col-sm-4">
                 <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="../resources/backyard.jpeg" alt="Card image cap">
+                    <img class="card-img-top" <?php echo 'src="/' . $product['path'] . '"' ?> alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's
-                            content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <h5 class="card-title">$<?php echo $product['price'] ?></h5>
+                        <p class="card-text"><?php echo $product['description'] ?></p>
+                        <a href="#" class="btn btn-primary">Add to Cart</a>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="../resources/backyard.jpeg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's
-                            content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="../resources/backyard.jpeg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's
-                            content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach ?>
         </div>
+        <?php endif ?> ?>
     </div>
 
 

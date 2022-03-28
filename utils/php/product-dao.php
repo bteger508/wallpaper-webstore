@@ -8,25 +8,26 @@ if (!defined('ROOT_DIR')) {
 }
 include_once ROOT_DIR . './config/secrets.php';
 
-var_dump(get_by_tagname('morning'));
+// var_dump(get_by_tagname('morning', 3));
 set_error_handler("myErrorHandler");
 
-function get_by_tagname($tag)
+function get_by_tagname($tag = 'scenary', $limit = 3)
 {
+
+    if (empty($tag))
+        $tag = 'scenary';
+
     $conn = DB_connect();
-    var_dump($conn);
     echo "<br>";
     $stmt = $conn->prepare("SELECT p.price, p.description, p.path, t.name FROM product AS p 
                                 INNER JOIN product_has_tag AS pht ON p.product_id=pht.product_id
                                 INNER JOIN tag AS t ON pht.tag_id=t.tag_id
                                 WHERE t.name=?
-                                ORDER BY p.product_id");
-    $stmt->bind_param('s', $tag);
-    $result = $stmt->execute();
-
-    $result = $stmt->get_result();
-    $products = $result->fetch_assoc();
-    return $products;
+                                ORDER BY p.product_id
+                                LIMIT ?");
+    $stmt->bind_param('si', $tag, $limit);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $conn->close();
 }
 
