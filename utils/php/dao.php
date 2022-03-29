@@ -72,7 +72,6 @@ function insert_user(
                                     favorite_color, phone_number, shopping_cart_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $current_date = new DateTime();
         $create_time = $current_date->format('Y-m-d');
-        var_dump($create_time);
 
         $pw_hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt->bind_param(
@@ -127,7 +126,7 @@ function product_insert(
 }
 
 // Adds a tag to a product id
-function add_tag_to_product($productId, $tagId) 
+function add_tag_to_product($productId, $tagId)
 {
     $conn = DB_connect();
     $stmt = $conn->prepare("INSERT INTO product_has_tag 
@@ -143,7 +142,7 @@ function retrieve_all_tags()
     $result = $conn->query("SELECT * FROM tag");
 
     if ($result) {
-        while($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
             $items[] = $row;
         }
         return $items;
