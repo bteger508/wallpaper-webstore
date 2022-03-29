@@ -13,3 +13,8 @@ function setFavoriteTag($tag)
 {
     setcookie('fav-tag', $tag);
 }
+
+function setUserId($userId)
+{
+    setcookie('user_id', $userId);
+}
