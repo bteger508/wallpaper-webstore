@@ -20,3 +20,12 @@ function setUserData($userDataJson)
 {
     setcookie('userData', $userDataJson, 0, "/");
 }
+
+function userIsAdmin()
+{
+    if (isset($_COOKIE['userData']) && !is_null($_COOKIE['userData'])) {
+        $userData = json_decode($_COOKIE['userData']);
+        return $userData->is_admin;
+    }
+    return false;
+}
