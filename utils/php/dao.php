@@ -112,7 +112,7 @@ function product_insert(
 ) {
     $conn = DB_connect();
     $stmt = $conn->prepare("INSERT INTO product 
-                            (title, price, picturePath, altText, description) VALUES 
+                            (title, price, path, altText, description) VALUES 
                             (?, ?, ?, ?, ?)");
     $stmt->bind_param("sdsss", $title, $price, $picturePath, $altText, $description);
     $stmt->execute();
