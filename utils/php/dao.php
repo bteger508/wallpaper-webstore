@@ -12,6 +12,7 @@ set_error_handler("myErrorHandler");
 // var_dump(insert_user('wamie4', 'bteger@bsu.edu', '12345', 'ben', 'eger', '2000-01-22', '#FFFFF', '111-111-1111', null));
 // var_dump(retrieve_all_users());
 // var_dump(validate_user("wamie", '12345'));
+// product_insert("it's it's this\" LOOK", 0.25, "/uploads/picture", "yup picture", "this is really cool!");
 
 
 // Returns true if the $username and pw match a record in the db, else false
@@ -98,6 +99,49 @@ function username_exists($username)
     $stmt->fetch();
 
     return !is_null($user_id);
+    $conn->close();
+}
+
+// Insert a new product into the Product table
+function product_insert(
+    $title,
+    $price,
+    $picturePath,
+    $altText,
+    $description
+) {
+    $conn = DB_connect();
+    $stmt = $conn->prepare("INSERT INTO product 
+                            (title, price, path, altText, description) VALUES 
+                            (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sdsss", $title, $price, $picturePath, $altText, $description);
+    $stmt->execute();
+    return $stmt->insert_id;
+    // TODO: Add some return statement to know that the product was successfully inserted
+}
+
+// Adds a tag to a product id
+function add_tag_to_product($productId, $tagId) 
+{
+    $conn = DB_connect();
+    $stmt = $conn->prepare("INSERT INTO product_has_tag 
+                            (product_id, tag_id) VALUES 
+                            (?, ?)");
+    $stmt->bind_param("dd", $productId, $tagId);
+    $stmt->execute();
+}
+
+function retrieve_all_tags()
+{
+    $conn = DB_connect();
+    $result = $conn->query("SELECT * FROM tag");
+
+    if ($result) {
+        while($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
     $conn->close();
 }
 
