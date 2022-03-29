@@ -1,12 +1,17 @@
 <?php
 
+// Code for handling MySQL errors taken from 
+// https://codereview.stackexchange.com/questions/174003/mysqli-query-and-error-handling-for-select-insert-and-update
+
+
 if (!defined('ROOT_DIR')) {
-	DEFINE('ROOT_DIR', __DIR__.'/../../');
+    DEFINE('ROOT_DIR', __DIR__ . '/../../');
 }
-include_once ROOT_DIR.'./config/secrets.php';
+
+include_once ROOT_DIR . './config/secrets.php';
 
 set_error_handler("myErrorHandler");
-
+// var_dump(validate_user("coolguycool", "Be182020!@Be"));
 // functions for testing
 // var_dump(username_exists("wamie")); 
 // var_dump(insert_user('wamie4', 'bteger@bsu.edu', '12345', 'ben', 'eger', '2000-01-22', '#FFFFF', '111-111-1111', null));
@@ -19,13 +24,14 @@ set_error_handler("myErrorHandler");
 function validate_user($username, $password)
 {
     $conn = DB_connect();
-    $stmt = $conn->prepare("SELECT password FROM user WHERE username=?");
+    $stmt = $conn->prepare("SELECT * FROM user WHERE username=?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
-    $stmt->bind_result($pw_hash);
-    $stmt->fetch();
-
-    return password_verify($password, $pw_hash);
+    $userData = $stmt->get_result()->fetch_assoc();
+    if (password_verify($password, $userData['password'])) {
+        return $userData;
+    } else
+        return null;
     $conn->close();
 }
 
@@ -36,7 +42,7 @@ function retrieve_all_users()
     $result = $conn->query("SELECT * FROM user");
 
     if ($result) {
-        while($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
             $items[] = $row;
         }
         return $items;
@@ -157,6 +163,6 @@ function myErrorHandler($errno, $errstr, $errfile, $errline)
 {
     error_log("$errstr in $errfile:$errline");
     header('HTTP/1.1 500 Internal Server Error', True, 500);
-    readfile(ROOT_DIR."./utils/php/error.html");
+    readfile(ROOT_DIR . "./utils/php/error.html");
     exit;
 }
