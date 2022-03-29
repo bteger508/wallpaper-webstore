@@ -18,7 +18,6 @@ function get_by_tagname($tag = 'scenary', $limit = 3)
         $tag = 'scenary';
 
     $conn = DB_connect();
-    echo "<br>";
     $stmt = $conn->prepare("SELECT p.price, p.description, p.path, t.name FROM product AS p 
                                 INNER JOIN product_has_tag AS pht ON p.product_id=pht.product_id
                                 INNER JOIN tag AS t ON pht.tag_id=t.tag_id
