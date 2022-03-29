@@ -116,7 +116,33 @@ function product_insert(
                             (?, ?, ?, ?, ?)");
     $stmt->bind_param("sdsss", $title, $price, $picturePath, $altText, $description);
     $stmt->execute();
+    return $stmt->insert_id;
     // TODO: Add some return statement to know that the product was successfully inserted
+}
+
+// Adds a tag to a product id
+function add_tag_to_product($productId, $tagId) 
+{
+    $conn = DB_connect();
+    $stmt = $conn->prepare("INSERT INTO product_has_tag 
+                            (product_id, tag_id) VALUES 
+                            (?, ?)");
+    $stmt->bind_param("dd", $productId, $tagId);
+    $stmt->execute();
+}
+
+function retrieve_all_tags()
+{
+    $conn = DB_connect();
+    $result = $conn->query("SELECT * FROM tag");
+
+    if ($result) {
+        while($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
+    $conn->close();
 }
 
 function DB_connect()

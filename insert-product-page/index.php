@@ -29,7 +29,7 @@ if (!defined('ROOT_DIR')) {
     <div class="login-form container-fluid">
         <h1>Insert Product</h1>
         <div class="container-fluid">
-            <form class="product-form w-100">
+            <form action="insert.php" method="post" class="product-form w-100" enctype="multipart/form-data">
                 <div class="form-group row w-100">
                     <label for="pictureTitle" class="col-sm-1-12 col-form-label">Picture Title</label>
                     <div class="col-sm-1-12">
@@ -42,6 +42,33 @@ if (!defined('ROOT_DIR')) {
                     <div class="col-sm-1-12">
                         <input type="number" class="form-control" name="picturePrice" id="picturePrice" value=0.05
                             min="0" max="100" step="0.01">
+                    </div>
+                </div>
+                <div class="form-group row w-100">
+                    <label for="pictureDescription" class="col-sm-1-12 col-form-label">Picture Details</label>
+                    <div class="col-sm-1-12">
+                        <input type="text" class="form-control" name="pictureDescription" id="pictureDescription">
+                    </div>
+                </div>
+                <div class="form-group row w-100">
+                    <label for="pictureImage" class="col-sm-1-12 col-form-label">Picture Image</label>
+                    <div class="col-sm-1-12">
+                        <input type="file" class="form-control" name="pictureImage" id="pictureImage" value=0.05
+                            min="0" max="100" step="0.01">
+                    </div>
+                </div>
+                <div class="form-group row w-100">
+                    <?php 
+                        include ROOT_DIR.'./utils/php/dao.php';
+                        $tags = retrieve_all_tags();
+                    ?>
+                    <label for="tags" class="col-sm-1-12 col-form-label">Picture Tags</label>
+                    <div class="col-sm-1-12">
+                        <select name="tags[]" id="tags" multiple>
+                            <?php foreach ($tags as $tag) : ?>
+                                <option value=<?php echo $tag['tag_id']?>><?php echo $tag['name'];?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row">
