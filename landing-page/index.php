@@ -6,10 +6,10 @@ if (!defined('ROOT_DIR')) {
 include(ROOT_DIR . './utils/php/cookies.php');
 include(ROOT_DIR . './utils/php/product-dao.php');
 
-setFavoriteTag('morning');
-var_dump(getFavoriteTag());
+setFavoriteTag('geese');
+// var_dump(getFavoriteTag());
 $productsArray = get_by_tagname(getFavoriteTag());
-var_dump($productsArray);
+// var_dump($productsArray);
 
 ?>
 <!doctype html>
@@ -55,7 +55,7 @@ var_dump($productsArray);
             </div>
             <?php endforeach ?>
         </div>
-        <?php endif ?> ?>
+        <?php endif ?>
     </div>
 
 
