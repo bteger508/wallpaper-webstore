@@ -6,7 +6,7 @@ if (!defined('ROOT_DIR')) {
 include(ROOT_DIR . './utils/php/cookies.php');
 include(ROOT_DIR . './utils/php/product-dao.php');
 
-setFavoriteTag('geese');
+setFavoriteTag('random');
 // var_dump(getFavoriteTag());
 $productsArray = get_by_tagname(getFavoriteTag());
 // var_dump($productsArray);
@@ -44,7 +44,7 @@ $productsArray = get_by_tagname(getFavoriteTag());
                 <?php foreach ($productsArray as $product) : ?>
                     <div class="col-sm-4">
                         <div class="card" style="width: 18rem;">
-                            <img class="card-img-top" <?php echo 'src="/' . $product['path'] . '"' ?> alt="Card image cap">
+                            <img class="card-img-top" <?php echo 'src="../resources/upload/' . $product['path'] . '"' ?> alt="Card image cap">
                             <div class="card-body">
                                 <h5 class="card-title">$<?php echo $product['price'] ?></h5>
                                 <p class="card-text"><?php echo $product['description'] ?></p>
