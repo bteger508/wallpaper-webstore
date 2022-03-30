@@ -2,11 +2,12 @@
 if (!defined('ROOT_DIR')) {
     DEFINE('ROOT_DIR', __DIR__ . '/../');
 }
-// include ROOT_DIR . './utils/php/dao.php';
+include_once(ROOT_DIR . './utils/php/dao.php');
+include_once(ROOT_DIR . './utils/php/cookies.php');
 
 // checks if wallpaperWebstoreCS420_userData cookie exists
-if (isset($_COOKIE['wallpaperWebstoreCS420_userData'])) {
-    $userData = json_decode($_COOKIE['wallpaperWebstoreCS420_userData'], true);
+if (getUserCookieData() !== null) {
+    $userData = getUserCookieData();
     $username = $userData['username'];
     $first_name = $userData['first_name'];
     $last_name = $userData['last_name'];
@@ -15,6 +16,7 @@ if (isset($_COOKIE['wallpaperWebstoreCS420_userData'])) {
     $dob = $userData['date_of_birth'];
     $favColor = $userData['favorite_color'];
     $isAdmin = $userData['is_admin'];
+    $dateSignedUp = new DateTime($userData['create_time']);
 } else {
     $username = '';
     $first_name = '';
@@ -24,15 +26,27 @@ if (isset($_COOKIE['wallpaperWebstoreCS420_userData'])) {
     $dob = '';
     $favColor = '';
     $isAdmin = false;
+    $dateSignedUp = null;
 }
+
+// checks if date is greater than 1 day
+function userAccountOlderThan1Day($dateSignedUp)
+{
+    $currentDate = new DateTime();
+    $diff = $currentDate->diff($dateSignedUp);
+    return $diff->d > 1;
+}
+
 ?>
 
 <nav class="container-fluid">
     <div class="row justify-content-between">
         <div class="col">
             <span class="h2 p-2">
-                <?php if ($username) { ?>
-                    Welcome back, <?php echo $first_name; ?>
+                <?php if ($username && userAccountOlderThan1Day($dateSignedUp)) { ?>
+                    Welcome back, <?php echo $first_name; ?>!
+                <?php } elseif ($username) { ?>
+                    Welcome to the Wallpaper Store, <?php echo $first_name; ?>!
                 <?php } else { ?>
                     Wallpaper Webstore
                 <?php } ?>
