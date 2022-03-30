@@ -141,7 +141,7 @@ function add_product_to_cart($user_id, $product_id)
     $stmt->bind_param("ii", $cart_id, $product_id);
     $result = $stmt->execute();
     $conn->close();
-    return $result;
+    return true;
 }
 
 // Get all the products in the cart for the user
@@ -154,12 +154,16 @@ function get_products_in_cart_for_user($user_id)
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $cart_id = $stmt->get_result()->fetch_assoc()['shopping_cart_id'];
+    // return false if the cart id is null
+    if (!$cart_id) return false;
 
     // get all rows in the cart
     $stmt = $conn->prepare("SELECT * FROM shopping_cart_has_product WHERE shopping_cart_id=?");
     $stmt->bind_param("i", $cart_id);
     $stmt->execute();
     $cartResult = $stmt->get_result();
+    // return false if the cart is empty
+    if ($cartResult->num_rows == 0) return false;
 
     // set the product ids to an array
     $product_ids = array();
@@ -180,6 +184,18 @@ function get_products_in_cart_for_user($user_id)
 
     $conn->close();
     return $products;
+}
+
+// Gets a product by id
+function get_product_by_id($product_id)
+{
+    $conn = DB_connect();
+    $stmt = $conn->prepare("SELECT * FROM product WHERE product_id=?");
+    $stmt->bind_param("i", $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    $conn->close();
+    return $result;
 }
 
 // Returns true if $username already exists in MySQL

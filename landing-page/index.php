@@ -12,6 +12,13 @@ setFavoriteTag('scenary');
 $productsArray = get_by_tagname(getFavoriteTag());
 // var_dump($productsArray);
 
+// If the user is logged in, get the user's id
+if (isset(getUserCookieData()['user_id'])) {
+    $user_id = getUserCookieData()['user_id'];
+} else {
+    $user_id = null;
+}
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -41,18 +48,21 @@ $productsArray = get_by_tagname(getFavoriteTag());
         <?php if ($productsArray) : ?>
             <h2>Suggested for You</h2>
             <div class="row justify-content-md-center">
-
                 <?php foreach ($productsArray as $product) : ?>
-                    <div class="col-sm-4">
-                        <div class="card" style="width: 18rem;">
-                            <img class="card-img-top" <?php echo 'src="../resources/upload/' . $product['path'] . '"' ?> alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">$<?php echo $product['price'] ?></h5>
-                                <p class="card-text"><?php echo $product['description'] ?></p>
-                                <a href="#" class="btn btn-primary">Add to Cart</a>
-                            </div>
-                        </div>
+                <div class="w-full m-2">
+                <div class="card grow-hover" style="width: 18rem;">
+                <a href="<?php echo '../browse-product/index.php?product_id=' . $product['product_id'] ?>">
+                    <img defer class="card-img-top img-thumbnail" <?php echo 'src="../resources/upload/' . $product['path'] . '"' ?> alt="Card image cap">
+                </a>
+                    <div class="card-body">
+                        <h5 class="card-title">$<?php echo $product['price'] ?></h5>
+                        <p class="card-text"><?php echo $product['description'] ?></p>
+                        <?php if ($user_id) : ?>
+                            <a href="./add-to-cart.php?product_id=<?php echo $product['product_id'] ?>" class="btn btn-primary">Add to Cart</a>
+                        <?php endif; ?>
                     </div>
+                </div>
+                </div>
                 <?php endforeach ?>
             </div>
         <?php endif ?>

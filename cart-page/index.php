@@ -77,7 +77,11 @@ function format_decimal_to_dollars_and_cents($decimal) {
 							foreach ($cartProducts as $product) {
 								?>
 								<tr>
-									<td><img height="100px" <?php echo 'src="../resources/upload/' . $product['path'] . '"' ?>></td>
+									<td>
+									<a href="../browse-product?product_id=<?php echo $product['product_id'] ?>">
+										<img class="grow-hover " height="100px" <?php echo 'src="../resources/upload/' . $product['path'] . '"' ?>>
+									</a>
+									</td>
 									<td><?php echo $product['title']; ?></td>
 									<td><?php echo $product['description']; ?></td>
 									<td><?php echo $product['price']; ?></td>

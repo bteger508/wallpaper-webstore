@@ -27,9 +27,9 @@ echo $user_id . '<br>';
 if (isset($product_id) && isset($user_id)) {
     // If the user is logged in, add the product to their cart
     if (add_product_to_cart($user_id, $product_id)) {
-        echo '<div class="alert alert-success" role="alert">Product added to cart!</div>';
+        header('Location: ../cart-page');
     } else {
-        echo '<div class="alert alert-danger" role="alert">Product could not be added to cart!</div>';
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 }
 

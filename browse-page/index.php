@@ -56,7 +56,7 @@ if (isset($_GET['tag'])) {
     <?php
     include_once(ROOT_DIR . './shared/nav-toolbar.php')
     ?>
-    <div class="container-fluid">
+    <div class="container-fluid pb-5">
         <h1>Browse Products</h1>
 
         <!-- This fancy PHP printing is from this article:
@@ -67,8 +67,10 @@ if (isset($_GET['tag'])) {
                 <div class="d-flex flex-row flex-wrap mr-auto">
                     <?php foreach ($productsArray as $product) : ?>
                     <div class="w-full m-2">
-                    <div class="card" style="width: 18rem;">
-                        <img defer class="card-img-top" <?php echo 'src="../resources/upload/' . $product['path'] . '"' ?> alt="Card image cap">
+                    <div class="card grow-hover" style="width: 18rem;">
+                    <a href="<?php echo '../browse-product/index.php?product_id=' . $product['product_id'] ?>">
+                        <img defer class="card-img-top img-thumbnail" <?php echo 'src="../resources/upload/' . $product['path'] . '"' ?> alt="Card image cap">
+                    </a>
                         <div class="card-body">
                             <h5 class="card-title">$<?php echo $product['price'] ?></h5>
                             <p class="card-text"><?php echo $product['description'] ?></p>
