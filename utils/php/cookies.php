@@ -10,9 +10,11 @@ $cookiePrefix = 'wallpaperWebstoreCS420_';
 
 $userDataCookieName = $cookiePrefix . 'userData';
 $favoriteTagCookieName = $cookiePrefix . 'favoriteTag';
+$tagScoresCookieName = $cookiePrefix . 'tagScores';
 
 DEFINE('USER_DATA_COOKIE_NAME', $userDataCookieName);
 DEFINE('FAVORITE_TAG_COOKIE_NAME', $favoriteTagCookieName);
+DEFINE('TAG_SCORES_COOKIE_NAME', $tagScoresCookieName);
 
 $cookieExpires = time() + (60 * 60 * 24 * 365); // 1 year
 $cookiePath = '/';
@@ -20,16 +22,53 @@ $cookiePath = '/';
 function getFavoriteTag()
 {
     // get Favorite Tag from cookie if it exists
-    if (isset($_COOKIE[FAVORITE_TAG_COOKIE_NAME])) {
-        return $_COOKIE[FAVORITE_TAG_COOKIE_NAME];
-    } else {
-        return null;
+    // if (isset($_COOKIE[FAVORITE_TAG_COOKIE_NAME])) {
+    //     return $_COOKIE[FAVORITE_TAG_COOKIE_NAME];
+    // } else {
+    //     return null;
+    // }
+
+    $tagScores = getTagScoresArray();
+
+    $favoriteTag = "scenary";
+    $topScore = $tagScores[$favoriteTag];
+
+    foreach ($tagScores as $tag => $score) {
+        if ($score > $topScore) {
+            $favoriteTag = $tag;
+            $topScore = $score;
+        }
     }
+
+    return $tag;
 }
 
 function setFavoriteTag($tag)
 {
     setcookie(FAVORITE_TAG_COOKIE_NAME, $tag, $GLOBALS['cookieExpires'], $GLOBALS['cookiePath']);
+}
+
+function incrementTagScore($tagName)
+{
+    $tagScores = getTagScoresArray();
+
+    if (array_key_exists($tagName, $tagScores)) {
+        $tagScores[$tagName] = $tagScores[$tagName] + 1;
+    } else {
+        $tagScores[$tagName] = 1;
+    }
+
+    $json = json_encode($tagScores);
+    setcookie(TAG_SCORES_COOKIE_NAME, $json, $GLOBALS['cookieExpires'], $GLOBALS['cookiePath']);
+}
+
+function getTagScoresArray()
+{
+    if (isset($_COOKIE[TAG_SCORES_COOKIE_NAME])) {
+        return $_COOKIE[TAG_SCORES_COOKIE_NAME];
+    } else {
+        return array("scenary" => 3);
+    }
 }
 
 function clearFavoriteTag()
