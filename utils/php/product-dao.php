@@ -7,6 +7,7 @@ if (!defined('ROOT_DIR')) {
     DEFINE('ROOT_DIR', __DIR__ . '/../../');
 }
 include_once ROOT_DIR . './config/secrets.php';
+include_once ROOT_DIR . './utils/php/dao.php';
 
 // var_dump(get_by_tagname('morning', 3));
 set_error_handler("myErrorHandler");
@@ -28,20 +29,4 @@ function get_by_tagname($tag = 'scenary', $limit = 3)
     $stmt->execute();
     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $conn->close();
-}
-
-function DB_connect()
-{
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-    $conn = new mysqli(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-    return $conn;
-}
-
-// The first parameter is required, even though it isn't used in the function body!
-function myErrorHandler($errno, $errstr, $errfile, $errline)
-{
-    error_log("$errstr in $errfile:$errline");
-    header('HTTP/1.1 500 Internal Server Error', True, 500);
-    readfile(ROOT_DIR . "./utils/php/error.html");
-    exit;
 }
