@@ -30,3 +30,18 @@ function get_by_tagname($tag = 'scenary', $limit = 3)
     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $conn->close();
 }
+
+// get all products in the db
+function get_all_products()
+{
+    $conn = DB_connect();
+    $result = $conn->query("SELECT * FROM product");
+
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
+    $conn->close();
+}

@@ -54,14 +54,19 @@ function userAccountOlderThan1Day($dateSignedUp)
         </div>
         <div class="col col-auto">
             <div class="row">
+                <!-- Admin links -->
                 <?php if ($isAdmin) { ?>
                     <a id="admin_route" class="nav-link" href="../view-users-page">Admin</a>
                     <a id="insert_route" class="nav-link" href="../insert-product-page/index.php">Insert</a>
                 <?php } ?>
+                <!-- Default links -->
                 <a id="home_route" class="nav-link" href="../landing-page">Home</a>
+                <a id="browse_route" class="nav-link" href="../browse-page">Browse</a>
+                <!-- Logged in user links -->
                 <?php if(!$username) { ?>
                     <a id="login_route" class="nav-link" href="../login-page">Login</a>
                     <a id="register_route" class="nav-link" href="../register-page">Register</a>
+                <!-- Logged out user links -->
                 <?php } else { ?>
                     <a id="cart_route" class="nav-link" href="../cart-page">Cart</a>
                     <a id="logout_route" class="nav-link" href="../logout-page">Logout</a>

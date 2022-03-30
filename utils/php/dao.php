@@ -69,7 +69,7 @@ function insert_user(
     } else {
         $conn = DB_connect();
         $stmt = $conn->prepare("INSERT INTO user (username, email, password, create_time, first_name, last_name, date_of_birth, 
-                                    favorite_color, phone_number, shopping_cart_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                                    favorite_color, phone_number, shopping_cart_id, is_admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
         $current_date = new DateTime();
         $create_time = $current_date->format('Y-m-d');
 
@@ -88,9 +88,45 @@ function insert_user(
             $shopping_cart_id
         );
 
-        return $stmt->execute();
+        $result = $stmt->execute();
+    
+        // get the id of the user that was just inserted
+        $user_id = $conn->insert_id;
+
+        // insert a cart for the user based on the user_id
+        insert_shopping_cart($user_id);
+
         $conn->close();
+        return $result;
     }
+}
+
+// Create a shopping cart for a user
+function insert_shopping_cart($user_id)
+{
+    $conn = DB_connect();
+    $stmt = $conn->prepare("INSERT INTO shopping_cart () VALUES ()");
+    $stmt->execute();
+    $cart_id = $conn->insert_id;
+
+    // update the user's shopping cart id
+    $stmt = $conn->prepare("UPDATE user SET shopping_cart_id=? WHERE user_id=?");
+    $stmt->bind_param("ii", $cart_id, $user_id);
+    $stmt->execute();
+    
+    $conn->close();
+    return $cart_id;
+}
+
+// Add a product to the shopping cart
+function add_product_to_cart($user_id, $product_id)
+{
+    $conn = DB_connect();
+    $stmt = $conn->prepare("INSERT INTO shopping_cart_has_product (shopping_cart_id, product_id, quantity) VALUES (?, ?, 1)");
+    $stmt->bind_param("ii", $user_id, $product_id);
+    $result = $stmt->execute();
+    $conn->close();
+    return $result;
 }
 
 // Returns true if $username already exists in MySQL
