@@ -144,6 +144,52 @@ function add_product_to_cart($user_id, $product_id)
     return true;
 }
 
+// Remove a product from the shopping cart
+function remove_product_from_cart($user_id, $product_id)
+{
+    $conn = DB_connect();
+
+    // get the cart id for the user
+    $stmt = $conn->prepare("SELECT shopping_cart_id FROM user WHERE user_id=?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $cart_id = $stmt->get_result()->fetch_assoc()['shopping_cart_id'];
+
+    // check if the product is already in the cart
+    $stmt = $conn->prepare("SELECT * FROM shopping_cart_has_product WHERE shopping_cart_id=? AND product_id=?");
+    $stmt->bind_param("ii", $cart_id, $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    if (!$result) return false;
+
+    // remove the product from the cart
+    $stmt = $conn->prepare("DELETE FROM shopping_cart_has_product WHERE shopping_cart_id=? AND product_id=?");
+    $stmt->bind_param("ii", $cart_id, $product_id);
+    $result = $stmt->execute();
+    $conn->close();
+    return true;
+}
+
+// Remove all products from the shopping cart
+function remove_all_products_from_cart($user_id)
+{
+    $conn = DB_connect();
+
+    // get the cart id for the user
+    $stmt = $conn->prepare("SELECT shopping_cart_id FROM user WHERE user_id=?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $cart_id = $stmt->get_result()->fetch_assoc()['shopping_cart_id'];
+
+    // remove all products from the cart
+    $stmt = $conn->prepare("DELETE FROM shopping_cart_has_product WHERE shopping_cart_id=?");
+    $stmt->bind_param("i", $cart_id);
+    $result = $stmt->execute();
+    $conn->close();
+    return true;
+}
+
+
 // Get all the products in the cart for the user
 function get_products_in_cart_for_user($user_id)
 {

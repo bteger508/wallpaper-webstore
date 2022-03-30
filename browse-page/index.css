@@ -56,4 +56,6 @@ nav a:hover {
 
 .active-tag {
 	background-color: #c73737;
+	color: white;
+	font-weight: bold;
 }

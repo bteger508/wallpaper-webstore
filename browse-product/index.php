@@ -64,7 +64,7 @@ if (!isset($product)) {
         <h1><?php echo $product['title'] ?></h1>
         <div class="row">
             <div class="col-md-6">
-                <img defer <?php echo 'src=../resources/upload/' . $product['path'] ?> class="img-fluid" alt="<?php echo $product['altText'] ?>">
+                <img defer <?php echo 'src=../resources/upload/' . $product['path'] ?> class="img-fluid img-thumbnail" alt="<?php echo $product['altText'] ?>">
             </div>
             <div class="col-md-6">
                 <!-- if user is logged in, show add to cart button -->

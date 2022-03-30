@@ -85,9 +85,18 @@ if (isset($_GET['tag'])) {
                 <!-- Show all possible tags to browse by -->
                 <div class="col-lg-1 m-0 p-0">
                     <div class="list-group">
-                        <a href="index.php" class="list-group-item list-group-item-action">All</a>
+                        <a href="index.php" 
+                           class="list-group-item list-group-item-action
+                           <?php if ($tag_in == null) {echo 'active-tag';} ?>
+                           ">
+                           All</a>
                         <?php foreach ($tags as $tag) : ?>
-                            <a href="index.php?tag=<?php echo $tag['name']; ?>" class="list-group-item list-group-item-action"><?php echo $tag['name']; ?></a>
+                            <a href="index.php?tag=<?php echo $tag['name']; ?>" class="list-group-item list-group-item-action 
+                            <?php 
+                                if ($tag['name'] == $tag_in) {echo 'active-tag';} 
+                            ?>"
+                            >
+                            <?php echo $tag['name']; ?></a>
                         <?php endforeach; ?>
                     </div>
                 </div>

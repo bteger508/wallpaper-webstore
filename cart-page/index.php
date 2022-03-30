@@ -59,7 +59,8 @@ function format_decimal_to_dollars_and_cents($decimal) {
 			<div>
 				<h1>Cart</h1>
 			</div>
-	
+
+			<?php if ($cartProducts != null) { ?>
 			<div class="row">
 				<!-- If the user is logged in, show the products in their cart. -->
 				<table class="table table-striped col-md-6">
@@ -69,6 +70,7 @@ function format_decimal_to_dollars_and_cents($decimal) {
 							<th scope="col">Product</th>
 							<th scope="col">Description</th>
 							<th scope="col">Price</th>
+							<th scope="col"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -84,7 +86,13 @@ function format_decimal_to_dollars_and_cents($decimal) {
 									</td>
 									<td><?php echo $product['title']; ?></td>
 									<td><?php echo $product['description']; ?></td>
-									<td><?php echo $product['price']; ?></td>
+									<td>$<?php echo $product['price']; ?></td>
+									<td>
+										<form action="../cart-page/remove-product.php" method="get">
+											<input type="hidden" name="product_id" value="<?php echo $product['product_id'] ?>" />
+											<button type="submit" class="btn btn-danger">Remove</button>
+										</form>
+									</td>
 								</tr>
 								<?php
 							}
@@ -122,8 +130,23 @@ function format_decimal_to_dollars_and_cents($decimal) {
 							</span>
 						</a>
 					</div>
+					<?php if (isset($cartProducts)) { ?> 
+					<div class="row mb-2">
+						<a href="../cart-page/empty.php" class="btn btn-danger">
+							Empty Cart
+						</a>
+					</div>
+					<?php } ?>
 				</div>
 			</div>
+			<?php } else { ?>
+			<div class="row">
+				<div class="col-md-6">
+					<h3>Your cart is empty.</h3>
+					<a href="../browse-page/index.php" class="btn btn-primary">Continue Shopping</a>
+				</div>
+			</div>
+			<?php } ?>
 
 		</div>
 
