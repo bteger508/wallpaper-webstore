@@ -101,10 +101,10 @@ function format_decimal_to_dollars_and_cents($decimal) {
 				</table>
 				<div class="col-md-2 mx-2">
 					<div class="row mb-2">
-						<a href="../browse-page/index.php" class="btn btn-primary">Continue Shopping</a>
+						<a href="../browse-page/index.php" class="btn btn-primary w-75">Continue Shopping</a>
 					</div>
 					<div class="row mb-2">
-						<a href="../browse-page/index.php" class="btn btn-primary">
+						<a href="../receipt-page/index.php" class="btn btn-success w-75">
 							Checkout 
 							<!-- Items in cart -->
 							(<?php
@@ -132,7 +132,7 @@ function format_decimal_to_dollars_and_cents($decimal) {
 					</div>
 					<?php if (isset($cartProducts)) { ?> 
 					<div class="row mb-2">
-						<a href="../cart-page/empty.php" class="btn btn-danger">
+						<a href="../cart-page/empty.php" class="btn btn-danger w-75">
 							Empty Cart
 						</a>
 					</div>
