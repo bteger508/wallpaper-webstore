@@ -78,7 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // get the user data and store it as a cookie
             $userDataResponse = validate_user($username, $password);
             $userDataJson = json_encode($userDataResponse);
-            setcookie('userData', $userDataJson, 0, "/");
+            setcookie('wallpaperWebstoreCS420_userData', $userDataJson, time() + (86400 * 30), "/");
+            // setcookie('userData', $userDataJson, 0, "/");
             header('Location: ../landing-page/index.php');
         } else {
             header('Location: ../register-page/index.php');
