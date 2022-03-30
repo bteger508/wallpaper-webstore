@@ -28,12 +28,12 @@ if (!defined('ROOT_DIR')) {
 	<body>
 		<!-- ===== Include Navbar ===== -->
 		<?php
-		include(ROOT_DIR.'./shared/nav-toolbar.php');
+		include_once(ROOT_DIR.'./shared/nav-toolbar.php');
 		?>
 
 		<!-- ===== Show All Users -->
 		<?php
-		include(ROOT_DIR.'./utils/php/dao.php');
+		include_once(ROOT_DIR.'./utils/php/dao.php');
 		echo "<table>";
 		echo "<tr>";
 		echo "<td><strong>Username</strong></td>";

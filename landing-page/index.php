@@ -3,8 +3,8 @@ if (!defined('ROOT_DIR')) {
     DEFINE('ROOT_DIR', __DIR__ . '/../');
 }
 
-include(ROOT_DIR . './utils/php/cookies.php');
-include(ROOT_DIR . './utils/php/product-dao.php');
+include_once(ROOT_DIR . './utils/php/cookies.php');
+include_once(ROOT_DIR . './utils/php/product-dao.php');
 
 setFavoriteTag('random');
 // var_dump(getFavoriteTag());
@@ -30,7 +30,7 @@ $productsArray = get_by_tagname(getFavoriteTag());
 
 <body>
     <?php
-    include(ROOT_DIR . './shared/nav-toolbar.php')
+    include_once(ROOT_DIR . './shared/nav-toolbar.php')
     ?>
     <div class="container">
         <h1>Landing Page</h1>

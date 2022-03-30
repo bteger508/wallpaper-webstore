@@ -3,7 +3,7 @@
 if (!defined('ROOT_DIR')) {
     DEFINE('ROOT_DIR', __DIR__ . '/../');
 }
-include ROOT_DIR . './utils/php/dao.php';
+include_once ROOT_DIR . './utils/php/dao.php';
 
 $errors = [];
 

@@ -28,7 +28,7 @@ if (!defined('ROOT_DIR')) {
 	<body>
         <!-- Insert NavBar -->
 		<?php
-		include(ROOT_DIR.'./shared/nav-toolbar.php')
+		include_once(ROOT_DIR.'./shared/nav-toolbar.php')
 		?>
 
 		<div>
