@@ -6,7 +6,8 @@ if (!defined('ROOT_DIR')) {
 include_once(ROOT_DIR . './utils/php/cookies.php');
 include_once(ROOT_DIR . './utils/php/product-dao.php');
 
-setFavoriteTag('random');
+clearFavoriteTag();
+setFavoriteTag('scenary');
 // var_dump(getFavoriteTag());
 $productsArray = get_by_tagname(getFavoriteTag());
 // var_dump($productsArray);

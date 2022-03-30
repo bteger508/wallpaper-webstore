@@ -64,24 +64,24 @@ if (isset($_GET['tag'])) {
         <?php if ($productsArray) : ?>
             <div class="d-flex flex-row">
                 <!-- Display all images -->
-                <div class="col-md-9">
-                <div class="d-flex flex-row flex-wrap">
+                <div class="d-flex flex-row flex-wrap mr-auto">
                     <?php foreach ($productsArray as $product) : ?>
-                    <div class="w-full mb-2">
+                    <div class="w-full m-2">
                     <div class="card" style="width: 18rem;">
                         <img defer class="card-img-top" <?php echo 'src="../resources/upload/' . $product['path'] . '"' ?> alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">$<?php echo $product['price'] ?></h5>
                             <p class="card-text"><?php echo $product['description'] ?></p>
-                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                            <?php if ($user_id) : ?>
+                                <a href="./add-to-cart.php?product_id=<?php echo $product['product_id'] ?>" class="btn btn-primary">Add to Cart</a>
+                            <?php endif; ?>
                         </div>
                     </div>
                     </div>
                     <?php endforeach ?>
                 </div>
-                </div>
                 <!-- Show all possible tags to browse by -->
-                <div class="col-md-2">
+                <div class="col-lg-1 m-0 p-0">
                     <div class="list-group">
                         <a href="index.php" class="list-group-item list-group-item-action">All</a>
                         <?php foreach ($tags as $tag) : ?>

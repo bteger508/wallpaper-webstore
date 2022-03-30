@@ -32,6 +32,11 @@ function setFavoriteTag($tag)
     setcookie(FAVORITE_TAG_COOKIE_NAME, $tag, $GLOBALS['cookieExpires'], $GLOBALS['cookiePath']);
 }
 
+function clearFavoriteTag()
+{
+    setcookie(FAVORITE_TAG_COOKIE_NAME, '', time() - 3600, $GLOBALS['cookiePath']);
+}
+
 function setUserData($userDataJson)
 {
     setCookie(USER_DATA_COOKIE_NAME, $userDataJson, $GLOBALS['cookieExpires'], $GLOBALS['cookiePath']);

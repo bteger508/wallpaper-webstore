@@ -122,11 +122,64 @@ function insert_shopping_cart($user_id)
 function add_product_to_cart($user_id, $product_id)
 {
     $conn = DB_connect();
+
+    // get the cart id for the user
+    $stmt = $conn->prepare("SELECT shopping_cart_id FROM user WHERE user_id=?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $cart_id = $stmt->get_result()->fetch_assoc()['shopping_cart_id'];
+
+    // check if the product is already in the cart
+    $stmt = $conn->prepare("SELECT * FROM shopping_cart_has_product WHERE shopping_cart_id=? AND product_id=?");
+    $stmt->bind_param("ii", $cart_id, $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    if ($result) return false;
+
+    // insert the product into the cart
     $stmt = $conn->prepare("INSERT INTO shopping_cart_has_product (shopping_cart_id, product_id, quantity) VALUES (?, ?, 1)");
-    $stmt->bind_param("ii", $user_id, $product_id);
+    $stmt->bind_param("ii", $cart_id, $product_id);
     $result = $stmt->execute();
     $conn->close();
     return $result;
+}
+
+// Get all the products in the cart for the user
+function get_products_in_cart_for_user($user_id)
+{
+    $conn = DB_connect();
+
+    // get the cart id for the user
+    $stmt = $conn->prepare("SELECT shopping_cart_id FROM user WHERE user_id=?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $cart_id = $stmt->get_result()->fetch_assoc()['shopping_cart_id'];
+
+    // get all rows in the cart
+    $stmt = $conn->prepare("SELECT * FROM shopping_cart_has_product WHERE shopping_cart_id=?");
+    $stmt->bind_param("i", $cart_id);
+    $stmt->execute();
+    $cartResult = $stmt->get_result();
+
+    // set the product ids to an array
+    $product_ids = array();
+    while ($row = $cartResult->fetch_assoc()) {
+        $product_ids[] = $row['product_id'];
+    }
+
+    // get all the products in the cart
+    $stmt = $conn->prepare("SELECT * FROM product WHERE product_id IN (" . implode(',', $product_ids) . ")");
+    $stmt->execute();
+    $productResult = $stmt->get_result();
+
+    // set the products to an array
+    $products = array();
+    while ($row = $productResult->fetch_assoc()) {
+        $products[] = $row;
+    }
+
+    $conn->close();
+    return $products;
 }
 
 // Returns true if $username already exists in MySQL
