@@ -31,6 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $userJson = json_encode($userDataResponse);
         setcookie('userData', $userJson, 0, "/");
         if (!empty($userDataResponse)) {
+            $userDataJson = json_encode($userDataResponse);
+            setcookie('wallpaperWebstoreCS420_userData', $userDataJson, time() + (86400 * 30), "/");
             header('Location: ../landing-page');
         } else {
             header('Location: ../login-page');
