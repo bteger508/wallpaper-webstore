@@ -1,6 +1,11 @@
 <?php
+if (!defined('ROOT_DIR')) {
+	DEFINE('ROOT_DIR', __DIR__.'/../');
+}
+include_once ROOT_DIR . './utils/php/cookies.php';
+
 // sets wallpaperWebstoreCS420_userData cookie to expire now
-setcookie('wallpaperWebstoreCS420_userData', '', time() - 3600, '/');
+clearUserCookieData();
 
 header('Location: ../landing-page/index.php');
 ?>
