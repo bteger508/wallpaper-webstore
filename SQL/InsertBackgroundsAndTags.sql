@@ -1,48 +1,86 @@
 -- Database seeding SQL script
+
+DELETE FROM `product_has_tag`;
+DELETE FROM `product`;
+ALTER TABLE `product` AUTO_INCREMENT = 1;
+DELETE FROM `tag`;
+ALTER TABLE `tag` AUTO_INCREMENT = 1;
+
 INSERT INTO `product`
 (`price`,
+`title`,
 `description`,
-`path`)
+`path`,
+`altText`
+)
 VALUES 
 (2.00,
+'Sunny Morning',
 'A sunny morning in Noblesville',
-'resources/backyard.jpeg'),
+'backyard.jpeg',
+'Sunny Morning'),
 (1.00,
+'Emens',
 'This elegent building is home to the largest performance hall on campus.',
-'resources/bsu-emens.jpeg'),
+'bsu-emens.jpeg',
+'Emens'),
 (1.00,
+'Frog Chalk',
 'If you have an eye for details, you may find these chalk drawings hiding around campus',
-'resources/bsu-frog.jpeg'),
+'bsu-frog.jpeg',
+'Frog Chalk'),
 (1.00,
+'Honkers On The Loose',
 'Beware of the BSU honkers',
-'resources/bsu-honkers.jpeg'),
+'bsu-honkers.jpeg',
+'Honkers On The Loose'),
 (1.00,
+'Sursa',
 'Where the music students perform',
-'resources/bsu-morning-sursa.jpeg'),
+'bsu-morning-sursa.jpeg',
+'Sursa'),
 (1.00,
+'McKinley',
 'The main road on campus',
-'resources/bsu-night-mckinley.jpeg'),
+'bsu-night-mckinley.jpeg',
+'McKinley'
+),
 (1.00,
+'BSU Night Skies',
 'BSU at night',
-'resources/bsu-night-skies.jpeg'),
+'bsu-night-skies.jpeg',
+'BSU Night Skies'),
 (1.00,
+'Scramble Light',
 'The scramble light on a rainy day',
-'resources/bsu-scramblelight.jpeg'),
+'bsu-scramblelight.jpeg',
+'Scramble Light'
+),
 (1.00,
+'Jazz Music',
 'A whiteboard in the Jazz room',
-'resources/bsu-whiteboard.jpeg'),
+'bsu-whiteboard.jpeg',
+'Jazz Music'),
 (1.00,
+'Frosted Trees',
 'Snowy trees near the Burkhart Building',
-'resources/bsu-winter-trees.jpeg'),
+'bsu-winter-trees.jpeg',
+'Frosted Trees'),
 (1.00,
+'Indy Skyline',
 'The view from the Soldiers and Sailors Monument in Indy',
-'resources/indy-skies.jpeg'),
+'indy-skies.jpeg',
+'Indy Skyline'),
 (1.00,
+'The Monon Trail',
 'The Indy skyline view from the Monon Trail',
-'resources/monon.jpeg'),
+'monon.jpeg',
+'The Monon Trail'),
 (0.50,
+'NYC Streets',
 'A busy street in NYC',
-'resources/ny-streets.jpeg');
+'ny-streets.jpeg',
+'NYC Streets');
 
 INSERT INTO `tag`
 (`name`)
