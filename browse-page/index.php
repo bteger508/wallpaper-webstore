@@ -31,6 +31,7 @@ $tags = retrieve_all_tags();
 // Get tag name from get request if set
 if (isset($_GET['tag'])) {
     $tag_in = $_GET['tag'];
+    incrementTagScore($tag_in, 1);
 } else {
     $tag_in = null;
 }

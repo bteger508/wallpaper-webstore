@@ -27,8 +27,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 // Get the product if it exists
 if (isset($product_id)) {
     $product = get_product_by_id($product_id);
+    // Get the tags for the product
+    $tags = get_tags_by_product_id($product_id);
+    $tagNames = array();
+    foreach ($tags as $tag) {
+        array_push($tagNames, $tag['name']);
+    }
+    incrementTagScores($tagNames, 2);
 } else {
     $product = null;
+    $tags = null;
 }
 
 ?>
@@ -78,8 +86,6 @@ if (!isset($product)) {
                 <p>$<?php echo $product['price'] ?></p>
                 <h3>Tags</h3>
                 <p><?php 
-                    // Get the tags for the product
-                    $tags = get_tags_by_product_id($product_id);
                     // Loop through the tags and print them
                     foreach ($tags as $tag) {
                         echo $tag['name'] . ' ';

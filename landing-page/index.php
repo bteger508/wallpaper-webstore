@@ -6,10 +6,7 @@ if (!defined('ROOT_DIR')) {
 include_once(ROOT_DIR . './utils/php/cookies.php');
 include_once(ROOT_DIR . './utils/php/product-dao.php');
 
-setFavoriteTag('scenary');
-// var_dump(getFavoriteTag());
 $productsArray = get_by_tagname(getFavoriteTag());
-// var_dump($productsArray);
 
 // If the user is logged in, get the user's id
 if (isset(getUserCookieData()['user_id'])) {

@@ -32,15 +32,15 @@ function getFavoriteTag()
 
     $favoriteTag = "scenary";
     $topScore = $tagScores[$favoriteTag];
-
+    // find the highest tag score
     foreach ($tagScores as $tag => $score) {
         if ($score > $topScore) {
-            $favoriteTag = $tag;
             $topScore = $score;
+            $favoriteTag = $tag;
         }
     }
 
-    return $tag;
+    return $favoriteTag;
 }
 
 function setFavoriteTag($tag)
@@ -48,14 +48,30 @@ function setFavoriteTag($tag)
     setcookie(FAVORITE_TAG_COOKIE_NAME, $tag, $GLOBALS['cookieExpires'], $GLOBALS['cookiePath']);
 }
 
-function incrementTagScore($tagName)
+function incrementTagScore($tagName, $increment = 1)
 {
     $tagScores = getTagScoresArray();
 
     if (array_key_exists($tagName, $tagScores)) {
-        $tagScores[$tagName] = $tagScores[$tagName] + 1;
+        $tagScores[$tagName] = $tagScores[$tagName] + $increment;
     } else {
-        $tagScores[$tagName] = 1;
+        $tagScores[$tagName] = $increment;
+    }
+
+    $json = json_encode($tagScores);
+    setcookie(TAG_SCORES_COOKIE_NAME, $json, $GLOBALS['cookieExpires'], $GLOBALS['cookiePath']);
+}
+
+function incrementTagScores($tagNameArray, $increment = 1)
+{
+    $tagScores = getTagScoresArray();
+
+    foreach ($tagNameArray as $tagName) {
+        if (array_key_exists($tagName, $tagScores)) {
+            $tagScores[$tagName] = $tagScores[$tagName] + $increment;
+        } else {
+            $tagScores[$tagName] = $increment;
+        }
     }
 
     $json = json_encode($tagScores);
@@ -65,7 +81,7 @@ function incrementTagScore($tagName)
 function getTagScoresArray()
 {
     if (isset($_COOKIE[TAG_SCORES_COOKIE_NAME])) {
-        return $_COOKIE[TAG_SCORES_COOKIE_NAME];
+        return json_decode($_COOKIE[TAG_SCORES_COOKIE_NAME], true);
     } else {
         return array("scenary" => 3);
     }
