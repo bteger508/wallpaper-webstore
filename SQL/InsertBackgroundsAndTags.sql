@@ -1,10 +1,10 @@
--- Database seeding SQL script
-
-DELETE FROM `product_has_tag`;
-DELETE FROM `product`;
-ALTER TABLE `product` AUTO_INCREMENT = 1;
-DELETE FROM `tag`;
-ALTER TABLE `tag` AUTO_INCREMENT = 1;
+-- Database seeding SQL scriptDELETE 
+-- DELETE FROM `product_has_tag`;
+-- DELETE FROM shopping_cart_has_product;
+-- DELETE FROM `product`;
+-- ALTER TABLE `product` AUTO_INCREMENT = 1;
+-- DELETE FROM `tag`;
+-- ALTER TABLE `tag` AUTO_INCREMENT = 1;
 
 INSERT INTO `product`
 (`price`,
