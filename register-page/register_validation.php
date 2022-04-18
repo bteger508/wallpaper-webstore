@@ -1,9 +1,9 @@
 <?php
 
 if (!defined('ROOT_DIR')) {
-	DEFINE('ROOT_DIR', __DIR__.'/../');
+    DEFINE('ROOT_DIR', __DIR__ . '/../');
 }
-include ROOT_DIR.'./utils/php/dao.php';
+include_once ROOT_DIR . './utils/php/dao.php';
 
 $errors = [];
 
@@ -74,6 +74,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Do the actual request if no errors
     if (empty($errors)) {
         if (insert_user($username, $email, $password, $first_name, $last_name, $dob, $favColor, $phone, null)) {
+
+            // get the user data and store it as a cookie
+            $userDataResponse = validate_user($username, $password);
+            $userDataJson = json_encode($userDataResponse);
+            setcookie('wallpaperWebstoreCS420_userData', $userDataJson, time() + (86400 * 30), "/");
+            // setcookie('userData', $userDataJson, 0, "/");
             header('Location: ../landing-page/index.php');
         } else {
             header('Location: ../register-page/index.php');

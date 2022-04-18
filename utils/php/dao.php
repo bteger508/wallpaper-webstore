@@ -1,12 +1,17 @@
 <?php
 
+// Code for handling MySQL errors taken from 
+// https://codereview.stackexchange.com/questions/174003/mysqli-query-and-error-handling-for-select-insert-and-update
+
+
 if (!defined('ROOT_DIR')) {
-	DEFINE('ROOT_DIR', __DIR__.'/../../');
+    DEFINE('ROOT_DIR', __DIR__ . '/../../');
 }
-include_once ROOT_DIR.'./config/secrets.php';
+
+include_once ROOT_DIR . './config/secrets.php';
 
 set_error_handler("myErrorHandler");
-
+// var_dump(validate_user("coolguycool", "Be182020!@Be"));
 // functions for testing
 // var_dump(username_exists("wamie")); 
 // var_dump(insert_user('wamie4', 'bteger@bsu.edu', '12345', 'ben', 'eger', '2000-01-22', '#FFFFF', '111-111-1111', null));
@@ -19,13 +24,14 @@ set_error_handler("myErrorHandler");
 function validate_user($username, $password)
 {
     $conn = DB_connect();
-    $stmt = $conn->prepare("SELECT password FROM user WHERE username=?");
+    $stmt = $conn->prepare("SELECT * FROM user WHERE username=?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
-    $stmt->bind_result($pw_hash);
-    $stmt->fetch();
-
-    return password_verify($password, $pw_hash);
+    $userData = $stmt->get_result()->fetch_assoc();
+    if (password_verify($password, $userData['password'])) {
+        return $userData;
+    } else
+        return null;
     $conn->close();
 }
 
@@ -36,7 +42,7 @@ function retrieve_all_users()
     $result = $conn->query("SELECT * FROM user");
 
     if ($result) {
-        while($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
             $items[] = $row;
         }
         return $items;
@@ -63,10 +69,9 @@ function insert_user(
     } else {
         $conn = DB_connect();
         $stmt = $conn->prepare("INSERT INTO user (username, email, password, create_time, first_name, last_name, date_of_birth, 
-                                    favorite_color, phone_number, shopping_cart_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                                    favorite_color, phone_number, shopping_cart_id, is_admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
         $current_date = new DateTime();
         $create_time = $current_date->format('Y-m-d');
-        var_dump($create_time);
 
         $pw_hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt->bind_param(
@@ -83,9 +88,160 @@ function insert_user(
             $shopping_cart_id
         );
 
-        return $stmt->execute();
+        $result = $stmt->execute();
+    
+        // get the id of the user that was just inserted
+        $user_id = $conn->insert_id;
+
+        // insert a cart for the user based on the user_id
+        insert_shopping_cart($user_id);
+
         $conn->close();
+        return $result;
     }
+}
+
+// Create a shopping cart for a user
+function insert_shopping_cart($user_id)
+{
+    $conn = DB_connect();
+    $stmt = $conn->prepare("INSERT INTO shopping_cart () VALUES ()");
+    $stmt->execute();
+    $cart_id = $conn->insert_id;
+
+    // update the user's shopping cart id
+    $stmt = $conn->prepare("UPDATE user SET shopping_cart_id=? WHERE user_id=?");
+    $stmt->bind_param("ii", $cart_id, $user_id);
+    $stmt->execute();
+    
+    $conn->close();
+    return $cart_id;
+}
+
+// Add a product to the shopping cart
+function add_product_to_cart($user_id, $product_id)
+{
+    $conn = DB_connect();
+
+    // get the cart id for the user
+    $stmt = $conn->prepare("SELECT shopping_cart_id FROM user WHERE user_id=?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $cart_id = $stmt->get_result()->fetch_assoc()['shopping_cart_id'];
+
+    // check if the product is already in the cart
+    $stmt = $conn->prepare("SELECT * FROM shopping_cart_has_product WHERE shopping_cart_id=? AND product_id=?");
+    $stmt->bind_param("ii", $cart_id, $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    if ($result) return false;
+
+    // insert the product into the cart
+    $stmt = $conn->prepare("INSERT INTO shopping_cart_has_product (shopping_cart_id, product_id, quantity) VALUES (?, ?, 1)");
+    $stmt->bind_param("ii", $cart_id, $product_id);
+    $result = $stmt->execute();
+    $conn->close();
+    return true;
+}
+
+// Remove a product from the shopping cart
+function remove_product_from_cart($user_id, $product_id)
+{
+    $conn = DB_connect();
+
+    // get the cart id for the user
+    $stmt = $conn->prepare("SELECT shopping_cart_id FROM user WHERE user_id=?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $cart_id = $stmt->get_result()->fetch_assoc()['shopping_cart_id'];
+
+    // check if the product is already in the cart
+    $stmt = $conn->prepare("SELECT * FROM shopping_cart_has_product WHERE shopping_cart_id=? AND product_id=?");
+    $stmt->bind_param("ii", $cart_id, $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    if (!$result) return false;
+
+    // remove the product from the cart
+    $stmt = $conn->prepare("DELETE FROM shopping_cart_has_product WHERE shopping_cart_id=? AND product_id=?");
+    $stmt->bind_param("ii", $cart_id, $product_id);
+    $result = $stmt->execute();
+    $conn->close();
+    return true;
+}
+
+// Remove all products from the shopping cart
+function remove_all_products_from_cart($user_id)
+{
+    $conn = DB_connect();
+
+    // get the cart id for the user
+    $stmt = $conn->prepare("SELECT shopping_cart_id FROM user WHERE user_id=?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $cart_id = $stmt->get_result()->fetch_assoc()['shopping_cart_id'];
+
+    // remove all products from the cart
+    $stmt = $conn->prepare("DELETE FROM shopping_cart_has_product WHERE shopping_cart_id=?");
+    $stmt->bind_param("i", $cart_id);
+    $result = $stmt->execute();
+    $conn->close();
+    return true;
+}
+
+
+// Get all the products in the cart for the user
+function get_products_in_cart_for_user($user_id)
+{
+    $conn = DB_connect();
+
+    // get the cart id for the user
+    $stmt = $conn->prepare("SELECT shopping_cart_id FROM user WHERE user_id=?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $cart_id = $stmt->get_result()->fetch_assoc()['shopping_cart_id'];
+    // return false if the cart id is null
+    if (!$cart_id) return false;
+
+    // get all rows in the cart
+    $stmt = $conn->prepare("SELECT * FROM shopping_cart_has_product WHERE shopping_cart_id=?");
+    $stmt->bind_param("i", $cart_id);
+    $stmt->execute();
+    $cartResult = $stmt->get_result();
+    // return false if the cart is empty
+    if ($cartResult->num_rows == 0) return false;
+
+    // set the product ids to an array
+    $product_ids = array();
+    while ($row = $cartResult->fetch_assoc()) {
+        $product_ids[] = $row['product_id'];
+    }
+
+    // get all the products in the cart
+    $stmt = $conn->prepare("SELECT * FROM product WHERE product_id IN (" . implode(',', $product_ids) . ")");
+    $stmt->execute();
+    $productResult = $stmt->get_result();
+
+    // set the products to an array
+    $products = array();
+    while ($row = $productResult->fetch_assoc()) {
+        $products[] = $row;
+    }
+
+    $conn->close();
+    return $products;
+}
+
+// Gets a product by id
+function get_product_by_id($product_id)
+{
+    $conn = DB_connect();
+    $stmt = $conn->prepare("SELECT * FROM product WHERE product_id=?");
+    $stmt->bind_param("i", $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    $conn->close();
+    return $result;
 }
 
 // Returns true if $username already exists in MySQL
@@ -121,7 +277,7 @@ function product_insert(
 }
 
 // Adds a tag to a product id
-function add_tag_to_product($productId, $tagId) 
+function add_tag_to_product($productId, $tagId)
 {
     $conn = DB_connect();
     $stmt = $conn->prepare("INSERT INTO product_has_tag 
@@ -137,7 +293,7 @@ function retrieve_all_tags()
     $result = $conn->query("SELECT * FROM tag");
 
     if ($result) {
-        while($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
             $items[] = $row;
         }
         return $items;
@@ -157,6 +313,6 @@ function myErrorHandler($errno, $errstr, $errfile, $errline)
 {
     error_log("$errstr in $errfile:$errline");
     header('HTTP/1.1 500 Internal Server Error', True, 500);
-    readfile(ROOT_DIR."./utils/php/error.html");
+    readfile(ROOT_DIR . "./utils/php/error.html");
     exit;
 }

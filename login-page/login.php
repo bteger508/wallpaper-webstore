@@ -1,10 +1,11 @@
 <?php
 
 if (!defined('ROOT_DIR')) {
-	DEFINE('ROOT_DIR', __DIR__.'/../');
+    DEFINE('ROOT_DIR', __DIR__ . '/../');
 }
-include ROOT_DIR.'./utils/php/dao.php';
-
+include_once ROOT_DIR . './utils/php/dao.php';
+include_once ROOT_DIR . './utils/php/cookies.php';
+session_start(); // start session to enable session vars
 $errors = [];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -27,12 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Do the actual request if no errors
     if (empty($errors)) {
-        if (validate_user($username, $password)) {
+        $userDataResponse = validate_user($username, $password);
+        if (!empty($userDataResponse)) {
+            setUserData(json_encode($userDataResponse));
             header('Location: ../landing-page');
         } else {
             header('Location: ../login-page');
         }
-
     }
 }
 

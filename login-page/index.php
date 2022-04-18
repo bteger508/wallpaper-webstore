@@ -27,7 +27,7 @@ if (!defined('ROOT_DIR')) {
 	<script src="index.js" defer></script>
 	<body>
 		<?php
-		include(ROOT_DIR.'./shared/nav-toolbar.php')
+		include_once(ROOT_DIR.'./shared/nav-toolbar.php')
 		?>
 
 		<!-- BootStrap form -->

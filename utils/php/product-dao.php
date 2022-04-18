@@ -7,6 +7,7 @@ if (!defined('ROOT_DIR')) {
     DEFINE('ROOT_DIR', __DIR__ . '/../../');
 }
 include_once ROOT_DIR . './config/secrets.php';
+include_once ROOT_DIR . './utils/php/dao.php';
 
 // var_dump(get_by_tagname('morning', 3));
 set_error_handler("myErrorHandler");
@@ -18,8 +19,7 @@ function get_by_tagname($tag = 'scenary', $limit = 3)
         $tag = 'scenary';
 
     $conn = DB_connect();
-    echo "<br>";
-    $stmt = $conn->prepare("SELECT p.price, p.description, p.path, t.name FROM product AS p 
+    $stmt = $conn->prepare("SELECT p.price, p.description, p.path, t.name, p.product_id FROM product AS p 
                                 INNER JOIN product_has_tag AS pht ON p.product_id=pht.product_id
                                 INNER JOIN tag AS t ON pht.tag_id=t.tag_id
                                 WHERE t.name=?
@@ -31,18 +31,31 @@ function get_by_tagname($tag = 'scenary', $limit = 3)
     $conn->close();
 }
 
-function DB_connect()
+// get all products in the db
+function get_all_products()
 {
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-    $conn = new mysqli(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-    return $conn;
+    $conn = DB_connect();
+    $result = $conn->query("SELECT * FROM product");
+
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
+    $conn->close();
 }
 
-// The first parameter is required, even though it isn't used in the function body!
-function myErrorHandler($errno, $errstr, $errfile, $errline)
+// get all tags for a product
+function get_tags_by_product_id($product_id)
 {
-    error_log("$errstr in $errfile:$errline");
-    header('HTTP/1.1 500 Internal Server Error', True, 500);
-    readfile(ROOT_DIR . "./utils/php/error.html");
-    exit;
+    $conn = DB_connect();
+    $stmt = $conn->prepare("SELECT t.name FROM product_has_tag AS pht 
+                                INNER JOIN tag AS t ON pht.tag_id=t.tag_id
+                                WHERE pht.product_id=?");
+    $stmt->bind_param('i', $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $conn->close();
+    return $result;
 }

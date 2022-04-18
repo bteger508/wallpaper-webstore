@@ -22,7 +22,7 @@ if (!defined('ROOT_DIR')) {
 
 <body>
     <?php
-    include(ROOT_DIR . './shared/nav-toolbar.php')
+    include_once(ROOT_DIR . './shared/nav-toolbar.php')
     ?>
 
     <!-- BootStrap form -->
@@ -59,7 +59,7 @@ if (!defined('ROOT_DIR')) {
                 </div>
                 <div class="form-group row w-100">
                     <?php 
-                        include ROOT_DIR.'./utils/php/dao.php';
+                        include_once ROOT_DIR.'./utils/php/dao.php';
                         $tags = retrieve_all_tags();
                     ?>
                     <label for="tags" class="col-sm-1-12 col-form-label">Picture Tags</label>
