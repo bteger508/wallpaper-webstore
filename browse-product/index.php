@@ -48,6 +48,13 @@ if (!isset($product)) {
 }
 ?>
 
+<?php
+function prettify_date_with_time($date) {
+    $date = strtotime($date);
+    return date('F j, Y, g:i a', $date);
+}
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -59,6 +66,9 @@ if (!isset($product)) {
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="index.css" />
 </head>
@@ -91,6 +101,39 @@ if (!isset($product)) {
                         echo $tag['name'] . ' ';
                     }
                 ?></p>
+                <h3><i class="fas fa-heart" style="color:deeppink"></i> <?php echo get_total_likes_by_product_id($product_id) ?></h3>
+                <h3>Comments</h3>
+                <?php
+                // Get the comments for the product
+                $comments = get_comments_by_product_id($product_id);
+                ?>
+                <div class="container-fluid m-0 p-0 h-25 overflow-auto">
+                    <?php foreach ($comments as $comment) { ?>
+                        <div class="py-2">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="card-text"><?php echo $comment['text'] ?></p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-muted">Posted on <?php echo prettify_date_with_time($comment['create_time']) ?></small>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+
+                <!-- add comment section  -->
+                <?php if (isset($user_id)) { ?>
+                    <form action="./add-comment.php" method="POST">
+                        <div class="form-group">
+                            <label for="comment">Comment</label>
+                            <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                        </div>
+                        <input type="hidden" name="product_id" value="<?php echo $product_id ?>">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                <?php } ?>
+
             </div>
         </div>
     </div>

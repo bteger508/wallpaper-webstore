@@ -17,7 +17,7 @@ $product_id = product_insert($picture_title, strval($picture_price), $random_upl
 
 // File upload
 if ((($_FILES['pictureImage']["type"] == "image/jpeg"))
-&& ($_FILES['pictureImage']["size"] < 2000000))
+&& ($_FILES['pictureImage']["size"] < 20000000))
   {
   if ($_FILES['pictureImage']["error"] > 0)
     {
