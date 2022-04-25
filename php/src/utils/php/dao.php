@@ -312,7 +312,7 @@ function DB_connect()
 function myErrorHandler($errno, $errstr, $errfile, $errline)
 {
     error_log("$errstr in $errfile:$errline");
-    header('HTTP/1.1 500 Internal Server Error', True, 500);
+    // header('HTTP/1.1 500 Internal Server Error', True, 500);
     readfile(ROOT_DIR . "./utils/php/error.html");
     exit;
 }
